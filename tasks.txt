@@ -1,7 +1,0 @@
-0 - go to view page - High - Work - 2026-09-28
-1 - go to marked page - High - Work - 2026-09-28
-0 - go to statistics page - High - Work - 2026-09-28
-1 - go to exit page - Medium - Study - 2026-09-28
-0 - go to view page  - Medium - Study - 2026-09-28
-0 - go to  view page - Medium - Study - 2026-09-28
-0 - go to view page - Medium - Study - 2026-09-28
