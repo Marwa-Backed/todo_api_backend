@@ -1,24 +1,24 @@
-# 📝 Todo API - Django REST Framework
+# مهامي الملونة 🎨 - My First Task
 
-Professional REST API for managing tasks, built with Django & DRF.
+**الطالبة:** مروة  
+**المشروع:** Color Project - Todo App
 
 ### 🚀 Live Demo
-Coming soon on Render
+https://todo-api-backend-1-in0g.onrender.com/
+
+### ✨ المميزات الجديدة
+- إضافة مهام ملونة
+- تحديد المهام كمكتملة (Checkbox) ✅
+- حذف المهام
+- تصميم عربي جميل
 
 ### 🛠️ Tech Stack
 - Python 3
 - Django
 - Django REST Framework
-- SQLite / PostgreSQL
+- HTML/CSS/JavaScript
 
 ### 📦 Features
 - Create, Read, Update, Delete Tasks
-- RESTful Endpoints
-- Ready for deployment
-
-### ▶️ Run Locally
-```bash
-cd todo_api
-pip install -r requirements.txt
-python manage.py migrate
-python manage.py runserver
+- Toggle Complete
+- Colorful UI
