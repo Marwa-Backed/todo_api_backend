@@ -1,77 +1,243 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Color Todo - My First Task</title>
-<style>
-*{box-sizing:border-box;font-family:system-ui}
-body{margin:0;min-height:100vh;background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);padding:20px;display:flex;align-items:center;justify-content:center}
-.card{width:100%;max-width:550px;background:white;border-radius:24px;padding:30px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
-h1{text-align:center;margin:0 0 5px;font-size:28px}
-p.sub{text-align:center;color:#888;margin:0 0 20px;font-size:14px}
-.row{display:flex;gap:10px;margin-bottom:15px}
-input[type="text"]{flex:1;padding:14px;border:2px solid #eee;border-radius:14px;font-size:16px;outline:none}
-input[type="text"]:focus{border-color:#667eea}
-input[type="color"]{width:60px;height:52px;border:2px solid #eee;border-radius:14px;padding:4px;cursor:pointer}
-button.add{padding:14px 22px;background:linear-gradient(135deg, #667eea, #764ba2);color:white;border:0;border-radius:14px;font-weight:bold;cursor:pointer}
-ul{padding:0;margin:20px 0 0;list-style:none}
-li{padding:14px 16px;border-radius:14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;color:#333;font-weight:500;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-li .del{background:rgba(0,0,0,.15);border:0;color:white;width:30px;height:30px;border-radius:50%;cursor:pointer}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Todo - My First Task</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: system-ui
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .card {
+            width: 100%;
+            max-width: 550px;
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .3)
+        }
+
+        h1 {
+            text-align: center;
+            margin: 0 0 5px;
+            font-size: 28px
+        }
+
+        p.sub {
+            text-align: center;
+            color: #888;
+            margin: 0 0 20px;
+            font-size: 14px
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 14px;
+            border: 2px solid #eee;
+            border-radius: 14px;
+            font-size: 16px;
+            outline: none
+        }
+
+        input[type="text"]:focus {
+            border-color: #667eea
+        }
+
+        input[type="color"] {
+            width: 60px;
+            height: 52px;
+            border: 2px solid #eee;
+            border-radius: 14px;
+            padding: 4px;
+            cursor: pointer
+        }
+
+        button.add {
+            padding: 14px 22px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: 0;
+            border-radius: 14px;
+            font-weight: bold;
+            cursor: pointer
+        }
+
+        ul {
+            padding: 0;
+            margin: 20px 0 0;
+            list-style: none
+        }
+
+        li {
+            padding: 14px 16px;
+            border-radius: 14px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #333;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .08)
+        }
+
+        li .del {
+            background: rgba(0, 0, 0, .15);
+            border: 0;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer
+        }
+    </style>
 </head>
+
 <body>
-<div class="card">
-<h1>🎨 مهامي الملونة</h1>
-<p class="sub">My First Task - Color Project</p>
-<div class="row">
-<input id="taskInput" type="text" placeholder="اكتبي مهمة جديدة...">
-<input id="colorInput" type="color" value="#667eea">
-<button class="add" onclick="addTask()">إضافة</button>
-</div>
-<ul id="list"></ul>
-</div>
-<script>
-const API="http://127.0.0.1:8000/api/tasks/";
-const list=document.getElementById('list');
+    <div class="card">
+        <h1>🎨 مهامي الملونة</h1>
+        <p class="sub">My First Task - Color Project</p>
+        <div class="row">
+            <input id="taskInput" type="text" placeholder="اكتبي مهمة جديدة...">
+            <input id="colorInput" type="color" value="#667eea">
+            <button class="add" onclick="addTask()">إضافة</button>
+        </div>
+        <ul id="list"></ul>
+    </div>
+    <script>
+const API = 'https://todo-api-backend-1-in0g.onrender.com/api/tasks/'; 
+const list = document.getElementById('list');
 
 async function getTasks(){
- try{
-  let r=await fetch(API);let d=await r.json();
-  let tasks=Array.isArray(d)?d:d.results||[];
-  // لو الـ API فاضي، استخدمي localStorage مؤقتا
-  if(tasks.length===0){tasks=JSON.parse(localStorage.getItem('colorTasks')||'[]');}
-  render(tasks);
- }catch(e){
-  let tasks=JSON.parse(localStorage.getItem('colorTasks')||'[]');
-  render(tasks);
- }
+  try{
+    let r = await fetch(API);
+    let d = await r.json();
+    let tasks = Array.isArray(d) ? d : d.results || [];
+    if(tasks.length === 0){
+      tasks = JSON.parse(localStorage.getItem('colorTasks') || '[]');
+    }
+    render(tasks);
+  }catch(e){
+    let tasks = JSON.parse(localStorage.getItem('colorTasks') || '[]');
+    render(tasks);
+  }
 }
+
 function render(tasks){
- if(!tasks.length){list.innerHTML='<li style="background:#f9f9f9;justify-content:center;color:#999">لا يوجد مهام بعد</li>';return;}
- list.innerHTML=tasks.map(t=>`<li style="background:${t.color||'#f0f0ff'}"><span>${t.title}</span><button class="del" onclick="deleteTask(${t.id})">×</button></li>`).join('');
+  if(!tasks.length){
+    list.innerHTML='<li style="background:#f9f9f9;padding:15px;text-align:center">ما في مهام</li>';
+    return;
+  }
+  list.innerHTML=tasks.map(t=>`
+    <li style="background:${t.color || '#e0e0ff'}; display:flex; justify-content:space-between; align-items:center; padding:12px; margin-bottom:8px; border-radius:12px; border-left:5px solid ${t.color || '#667eea'}">
+      <div style="display:flex; align-items:center; gap:10px; flex:1">
+        <input type="checkbox" ${t.completed ? 'checked' : ''} onchange="toggleComplete(${t.id}, this.checked)" style="width:20px; height:20px; cursor:pointer">
+        <span style="${t.completed ? 'text-decoration: line-through; opacity:0.5' : ''}">${t.title}</span>
+      </div>
+      <button onclick="deleteTask(${t.id})" style="background:rgba(0,0,0,.1); border:0; width:30px; height:30px; border-radius:50%">×</button>
+    </li>
+  `).join('');
 }
+
+function render(tasks){
+  if(!tasks.length){
+    list.innerHTML='<li style="background:#f9f9f9;padding:15px;text-align:center">ما في مهام</li>';
+    return;
+  }
+  list.innerHTML=tasks.map(t=>`
+    <li style="background:${t.color || '#e0e0ff'}; display:flex; justify-content:space-between; align-items:center; padding:12px; margin-bottom:8px; border-radius:12px; border-left:5px solid ${t.color}">
+      <div style="display:flex; align-items:center; gap:10px; flex:1">
+        <input type="checkbox" ${t.completed ? 'checked' : ''} onchange="toggleComplete(${t.id}, this.checked)" style="width:20px; height:20px">
+        <span style="${t.completed ? 'text-decoration: line-through; opacity:0.5' : ''}">${t.title}</span>
+      </div>
+      <button onclick="deleteTask(${t.id})" style="background:rgba(0,0,0,.1); border:0; width:30px; height:30px; border-radius:50%">×</button>
+    </li>
+  `).join('');
+}
+
+async function toggleComplete(id, isChecked){
+  let tasks = JSON.parse(localStorage.getItem('colorTasks')||'[]');
+  tasks = tasks.map(t=> t.id==id ? {...t, completed: isChecked} : t);
+  localStorage.setItem('colorTasks', JSON.stringify(tasks));
+  render(tasks);
+  try{
+    await fetch(`${API}${id}/`, {
+      method:'PATCH',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({completed: isChecked})
+    });
+  }catch(e){}
+  
+list.innerHTML=tasks.map(t=>`
+    <li style="background:${t.color || '#e0e0ff'}; display:flex; justify-content:space-between; align-items:center; padding:12px; margin-bottom:8px; border-radius:12px; border-left:5px solid ${t.color || '#667eea'}">
+      <div style="display:flex; align-items:center; gap:10px; flex:1">
+        <input type="checkbox" ${t.completed ? 'checked' : ''} onchange="toggleComplete(${t.id}, this.checked)" style="width:20px; height:20px; cursor:pointer">
+        <span style="${t.completed ? 'text-decoration: line-through; opacity:0.5' : ''}">${t.title}</span>
+      </div>
+      <button onclick="deleteTask(${t.id})" style="background:rgba(0,0,0,.1); border:0; width:30px; height:30px; border-radius:50%; cursor:pointer">×</button>
+    </li>
+  `).join('');
+}
+
 async function addTask(){
- let title=document.getElementById('taskInput').value.trim();
- let color=document.getElementById('colorInput').value;
- if(!title)return;
- let newTask={id:Date.now(),title,color};
- let tasks=JSON.parse(localStorage.getItem('colorTasks')||'[]');
- tasks.push(newTask);
- localStorage.setItem('colorTasks',JSON.stringify(tasks));
- // حاول ترسلي للـ API كمان
- try{await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({title,color,completed:false})});}catch(e){}
- document.getElementById('taskInput').value='';
- getTasks();
+  let title = document.getElementById('taskInput').value.trim();
+  let color = document.getElementById('colorInput').value;
+  if(!title) return;
+  
+  let newTask = {id: Date.now(), title, color, completed: false}; // أضفنا completed هنا
+  
+  let tasks = JSON.parse(localStorage.getItem('colorTasks') || '[]');
+  tasks.push(newTask);
+  localStorage.setItem('colorTasks', JSON.stringify(tasks));
+  
+  document.getElementById('taskInput').value = '';
+  render(tasks);
+
+  try{
+    await fetch(API, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({title, color, completed: false})});
+    getTasks();
+  }catch(e){}
 }
+
+async function toggleComplete(id, isChecked){
+  let tasks = JSON.parse(localStorage.getItem('colorTasks') || '[]');
+  tasks = tasks.map(t=> t.id == id ? {...t, completed: isChecked} : t);
+  localStorage.setItem('colorTasks', JSON.stringify(tasks));
+  render(tasks);
+  
+  try{
+    await fetch(API+id+'/', {method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify({completed: isChecked})});
+  }catch(e){}
+}
+
 function deleteTask(id){
- let tasks=JSON.parse(localStorage.getItem('colorTasks')||'[]');
- tasks=tasks.filter(t=>t.id!==id);
- localStorage.setItem('colorTasks',JSON.stringify(tasks));
- try{fetch(API+id+'/',{method:'DELETE'});}catch(e){}
- getTasks();
+  let tasks = JSON.parse(localStorage.getItem('colorTasks') || '[]');
+  tasks = tasks.filter(t=> t.id != id); // هنا كان الخطأ - صلحتو
+  localStorage.setItem('colorTasks', JSON.stringify(tasks));
+  render(tasks);
+  try{ fetch(API+id+'/', {method:'DELETE'}); }catch(e){}
 }
+
 getTasks();
 </script>
 </body>
+
 </html>
